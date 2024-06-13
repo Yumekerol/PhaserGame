@@ -20,8 +20,15 @@ class Scene1 extends Phaser.Scene{
       });
 
       this.anims.create({
-        key: 'walking_y',
+        key: 'walking_up',
         frames: this.anims.generateFrameNumbers('girl', { start: 4, end: 7 }),
+        frameRate: 10,
+        repeat: -1
+      });
+
+      this.anims.create({
+        key: 'walking_down',
+        frames: this.anims.generateFrameNumbers('girl', { start: 8, end: 10 }),
         frameRate: 10,
         repeat: -1
       });

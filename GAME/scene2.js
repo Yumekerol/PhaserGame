@@ -9,14 +9,19 @@ class Scene2 extends Phaser.Scene{
 
         this.doce = this.add.image(100,100,"doce");
 
-        this.girl = this.physics.add.sprite(200, 200, "girl");
-
         this.cursors = this.input.keyboard.createCursorKeys();
 
         //this.doce.setScale(2);
         this.add.text(20,20,
                   "Playing Game");
 
+        for(let i = 0; i < 4; i++) {
+          for(let j = 0; j<4; j++) {
+            this.add.rectangle(i*144 + 40, j*144 + 55, 80, 80, 0xff0000)
+          }
+        }
+
+        this.girl = this.physics.add.sprite(200, 200, "girl");
     }
 
     update() {
@@ -45,13 +50,13 @@ class Scene2 extends Phaser.Scene{
       {
         this.girl.setVelocityY(-160);
 
-        this.girl.anims.play('walking_y', true);
+        this.girl.anims.play('walking_up', true);
       }
       else if (this.cursors.down.isDown)
       {
         this.girl.setVelocityY(160);
 
-        this.girl.anims.play('walking_y', true);
+        this.girl.anims.play('walking_down', true);
       }
       else
       {
