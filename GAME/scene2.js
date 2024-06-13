@@ -7,7 +7,7 @@ class Scene2 extends Phaser.Scene{
         this.background = this.add.image(0, 0,"background");
         this.background.setOrigin(0,0);
 
-        this.doce = this.add.image(100,100,"doce");
+        //this.doce = this.add.image(100,100,"doce");
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -15,14 +15,41 @@ class Scene2 extends Phaser.Scene{
         this.add.text(20,20,
                   "Playing Game");
 
-        for(let i = 0; i < 4; i++) {
-          for(let j = 0; j<4; j++) {
-            this.add.rectangle(i*144 + 40, j*144 + 55, 80, 80, 0xff0000)
-          }
+        this.positions = this.generateRandomPositions(16, 4, 190, 148);
+
+        for (let i = 0; i < this.positions.length; i++) {
+            const position = this.positions[i];
+            if (Math.random() < 0.5) {  // 50% de chance para cada um
+                this.add.image(position.x, position.y, "doce").setDepth(0);
+            } else {
+                this.add.image(position.x, position.y, "bomba").setDepth(0);
+            }
         }
+
+        //for(let i = 0; i < 4; i++) {
+          //for(let j = 0; j<4; j++) {
+            //this.add.image(i*190 + 100, j*148 + 100, "card");
+          //}
+        //}
 
         this.girl = this.physics.add.sprite(200, 200, "girl");
     }
+
+    generateRandomPositions(count, gridSize, xSpacing, ySpacing) {
+        const positions = [];
+        for (let i = 0; i < gridSize; i++) {
+            for (let j = 0; j < gridSize; j++) {
+                positions.push({ x: i * xSpacing + 100, y: j * ySpacing + 100 });
+            }
+        }
+        // Embaralha as posições
+        for (let i = positions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [positions[i], positions[j]] = [positions[j], positions[i]];
+        }
+        return positions.slice(0, count);
+    }
+
 
     update() {
       if (this.cursors.left.isDown)
