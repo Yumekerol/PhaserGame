@@ -8,7 +8,7 @@ class Scene2 extends Phaser.Scene{
         this.background.setOrigin(0,0);
 
         this.lantern = this.add.image(35, 35, "lantern");
-        this.lantern.setScale(1.2);
+        this.lantern.setScale(1.25);
         //this.doce = this.add.image(100,100,"doce");
 
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -28,11 +28,11 @@ class Scene2 extends Phaser.Scene{
             }
         }
 
-        for(let i = 0; i < 4; i++) {
+        /*for(let i = 0; i < 4; i++) {
           for(let j = 0; j<4; j++) {
             this.add.image(i*190 + 110, j*148 + 110, "card");
           }
-        }
+        }*/
 
         this.girl = this.physics.add.sprite(200, 200, "girl");
     }
