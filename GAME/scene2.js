@@ -1,40 +1,50 @@
-class Scene2 extends Phaser.Scene{
-    constructor(){
+class Scene2 extends Phaser.Scene {
+    constructor() {
         super("playGame");
     }
 
-    create(){
-        this.background = this.add.image(0, 0,"background");
-        this.background.setOrigin(0,0);
+    create() {
+        this.background = this.add.image(0, 0, "background");
+        this.background.setOrigin(0, 0);
 
         this.lantern = this.add.image(35, 35, "lantern");
         this.lantern.setScale(1.25);
-        //this.doce = this.add.image(100,100,"doce");
+        /*this.music = this.sound.add("music");
+        var musicConfig = {
+            mute: false,
+            volume: 0.2,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: false,
+            delay: 0
+        }
+        this.music.play(musicConfig);*/
 
         this.cursors = this.input.keyboard.createCursorKeys();
-
-        //this.doce.setScale(2);
-        /*this.add.text(20,20,
-                  "Playing Game")*/;
 
         this.positions = this.generateRandomPositions(16, 4, 190, 148);
 
         for (let i = 0; i < this.positions.length; i++) {
             const position = this.positions[i];
-            if (Math.random() < 0.5) {  // 50% de chance para cada um
+            if (Math.random() < 0.5) {
                 this.add.image(position.x, position.y, "doce").setDepth(0);
             } else {
                 this.add.image(position.x, position.y, "bomba").setDepth(0);
             }
         }
 
-        /*for(let i = 0; i < 4; i++) {
-          for(let j = 0; j<4; j++) {
-            this.add.image(i*190 + 110, j*148 + 110, "card");
-          }
-        }*/
+        this.cards = this.physics.add.group();
+
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+                const card = this.cards.create(i * 190 + 110, j * 148 + 110, "card");
+                card.setImmovable(true);
+            }
+        }
 
         this.girl = this.physics.add.sprite(200, 200, "girl");
+        this.physics.add.collider(this.girl, this.cards, this.revealCard, null, this);
     }
 
     generateRandomPositions(count, gridSize, xSpacing, ySpacing) {
@@ -44,7 +54,6 @@ class Scene2 extends Phaser.Scene{
                 positions.push({ x: i * xSpacing + 100, y: j * ySpacing + 100 });
             }
         }
-        // Embaralha as posições
         for (let i = positions.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [positions[i], positions[j]] = [positions[j], positions[i]];
@@ -52,49 +61,38 @@ class Scene2 extends Phaser.Scene{
         return positions.slice(0, count);
     }
 
+    revealCard(girl, card) {
+        card.y -= 30;
+        card.body.setAllowGravity(false);
+        card.body.setImmovable(true);
+    }
 
     update() {
-      if (this.cursors.left.isDown)
-      {
-        this.girl.setFlipX(true);
-        this.girl.setVelocityX(-160);
+        if (this.cursors.left.isDown) {
+            this.girl.setFlipX(true);
+            this.girl.setVelocityX(-160);
+            this.girl.anims.play('walking_x', true);
+        } else if (this.cursors.right.isDown) {
+            this.girl.setFlipX(false);
+            this.girl.setVelocityX(160);
+            this.girl.anims.play('walking_x', true);
+        } else {
+            this.girl.setFlipX(false);
+            this.girl.setVelocityX(0);
+        }
 
-        this.girl.anims.play('walking_x', true);
-      }
-      else if (this.cursors.right.isDown)
-      {
-        this.girl.setFlipX(false);
+        if (this.cursors.up.isDown) {
+            this.girl.setVelocityY(-160);
+            this.girl.anims.play('walking_up', true);
+        } else if (this.cursors.down.isDown) {
+            this.girl.setVelocityY(160);
+            this.girl.anims.play('walking_down', true);
+        } else {
+            this.girl.setVelocityY(0);
+        }
 
-        this.girl.setVelocityX(160);
-
-        this.girl.anims.play('walking_x', true);
-      }
-      else
-      {
-        this.girl.setFlipX(false);
-        this.girl.setVelocityX(0);
-      }
-
-      if (this.cursors.up.isDown)
-      {
-        this.girl.setVelocityY(-160);
-
-        this.girl.anims.play('walking_up', true);
-      }
-      else if (this.cursors.down.isDown)
-      {
-        this.girl.setVelocityY(160);
-
-        this.girl.anims.play('walking_down', true);
-      }
-      else
-      {
-        this.girl.setVelocityY(0);
-
-      }
-
-      if(this.girl.body.velocity.x === 0 && this.girl.body.velocity.y === 0) {
-        this.girl.anims.play('stopped');
-      }
+        if (this.girl.body.velocity.x === 0 && this.girl.body.velocity.y === 0) {
+            this.girl.anims.play('stopped');
+        }
     }
 }

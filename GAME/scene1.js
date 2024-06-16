@@ -10,6 +10,8 @@ class Scene1 extends Phaser.Scene{
         this.load.image("bomba", "assets/bomba.png");
         this.load.image("card", "assets/card.png");
         this.load.spritesheet("girl", "assets/meninarosa.png",{ frameWidth: 64, frameHeight: 64 });
+
+        //this.load.audio("music", "assets/sounds/music.mp3")
     }
     create(){
         this.add.text(20, 20, "Loading game...");
