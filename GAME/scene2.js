@@ -1,25 +1,18 @@
 class Scene2 extends Phaser.Scene {
     constructor() {
         super("playGame");
+        this.isJumping = false;
     }
 
     create() {
         this.background = this.add.image(0, 0, "background");
         this.background.setOrigin(0, 0);
-
         this.lantern = this.add.image(35, 35, "lantern");
         this.lantern.setScale(1.25);
-        /*this.music = this.sound.add("music");
-        var musicConfig = {
-            mute: false,
-            volume: 0.2,
-            rate: 1,
-            detune: 0,
-            seek: 0,
-            loop: false,
-            delay: 0
-        }
-        this.music.play(musicConfig);*/
+
+        this.candybar = this.add.sprite(700, 35, "candybar");
+        this.candybar.setScale(1.8);
+
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -38,13 +31,17 @@ class Scene2 extends Phaser.Scene {
 
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
-                const card = this.cards.create(i * 190 + 110, j * 148 + 110, "card");
+                const card = this.cards.create(i * 190 + 110, j * 150 + 110, "card");
                 card.setImmovable(true);
             }
         }
 
         this.girl = this.physics.add.sprite(200, 200, "girl");
         this.physics.add.collider(this.girl, this.cards, this.revealCard, null, this);
+
+        this.input.keyboard.on('keydown-SPACE', this.jump, this);
+        //this.explosion = this.add.sprite(400, 300, "explosion");
+
     }
 
     generateRandomPositions(count, gridSize, xSpacing, ySpacing) {
@@ -61,10 +58,24 @@ class Scene2 extends Phaser.Scene {
         return positions.slice(0, count);
     }
 
+    jump() {
+        if (!this.isJumping) {
+            this.isJumping = true;
+            this.girl.setVelocityY(-200);
+            this.time.delayedCall(500, () => {
+                this.isJumping = false;
+            });
+        }
+    }
+
     revealCard(girl, card) {
-        card.y -= 30;
-        card.body.setAllowGravity(false);
-        card.body.setImmovable(true);
+        if (this.isJumping) {
+            card.y -= 30;
+            card.body.setAllowGravity(false);
+            card.body.setImmovable(true);
+
+            //this.explosion.anim.play('explode', true);
+        }
     }
 
     update() {

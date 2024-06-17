@@ -9,8 +9,9 @@ class Scene1 extends Phaser.Scene{
         this.load.image("doce", "assets/doce.png");
         this.load.image("bomba", "assets/bomba.png");
         this.load.image("card", "assets/card.png");
+        this.load.spritesheet("candybar", "assets/candybar.png", { frameWidth: 100, frameHeight: 32 });
         this.load.spritesheet("girl", "assets/meninarosa.png",{ frameWidth: 64, frameHeight: 64 });
-
+        this.load.spritesheet("explosion", "assets/explosion.png", { frameWidth: 700, frameHeight: 500 })
         //this.load.audio("music", "assets/sounds/music.mp3")
     }
     create(){
@@ -44,5 +45,13 @@ class Scene1 extends Phaser.Scene{
         frameRate: 1,
         repeat: 0
       });
+
+        this.anims.create({
+            key: 'explode',
+            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9 }),
+            frameRate: 10,
+            repeat: 0
+        });
+
     }
 }
