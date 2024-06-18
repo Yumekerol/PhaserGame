@@ -2,46 +2,52 @@ class Scene2 extends Phaser.Scene {
     constructor() {
         super("playGame");
         this.isJumping = false;
+        this.candycollected = 0;
+        this.totalcandy = 0;
     }
 
     create() {
+
         this.background = this.add.image(0, 0, "background");
         this.background.setOrigin(0, 0);
+
         this.lantern = this.add.image(35, 35, "lantern");
         this.lantern.setScale(1.25);
 
         this.candybar = this.add.sprite(700, 35, "candybar");
         this.candybar.setScale(1.8);
 
-
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.positions = this.generateRandomPositions(16, 4, 190, 148);
 
-        for (let i = 0; i < this.positions.length; i++) {
-            const position = this.positions[i];
-            if (Math.random() < 0.5) {
-                this.add.image(position.x, position.y, "doce").setDepth(0);
-            } else {
-                this.add.image(position.x, position.y, "bomba").setDepth(0);
-            }
-        }
-
         this.cards = this.physics.add.group();
 
-        for (let i = 0; i < 4; i++) {
-            for (let j = 0; j < 4; j++) {
-                const card = this.cards.create(i * 190 + 110, j * 150 + 110, "card");
-                card.setImmovable(true);
+        for (let i = 0; i < this.positions.length; i++) {
+            const position = this.positions[i];
+            const card = this.cards.create(position.x, position.y, "card");
+            card.setImmovable(true);
+            card.setData("revealed", false);
+
+            if (Math.random() < 0.5) {
+                const doce = this.add.image(position.x, position.y, "doce").setVisible(false);
+                card.setData("content", doce);
+                card.setData("type", "doce");
+                this.totalcandy++; // Incrementa o total de doces
+            } else {
+                const bomba = this.add.image(position.x, position.y, "bomba").setVisible(false);
+                card.setData("content", bomba);
+                card.setData("type", "bomba");
             }
         }
 
         this.girl = this.physics.add.sprite(200, 200, "girl");
         this.physics.add.collider(this.girl, this.cards, this.revealCard, null, this);
 
+        // Configura a tecla de espaço para pular
         this.input.keyboard.on('keydown-SPACE', this.jump, this);
-        //this.explosion = this.add.sprite(400, 300, "explosion");
 
+        this.explosion = this.add.sprite(0, 0, "explosion").setVisible(false);
     }
 
     generateRandomPositions(count, gridSize, xSpacing, ySpacing) {
@@ -69,13 +75,78 @@ class Scene2 extends Phaser.Scene {
     }
 
     revealCard(girl, card) {
-        if (this.isJumping) {
-            card.y -= 30;
-            card.body.setAllowGravity(false);
-            card.body.setImmovable(true);
+        if (this.isJumping && !card.getData("revealed")) {
+            card.setData("revealed", true);
 
-            //this.explosion.anim.play('explode', true);
+            const content = card.getData("content");
+            const cardType = card.getData("type");
+
+            this.tweens.add({
+                targets: card,
+                y: card.y - 50,
+                duration: 300,
+                onComplete: () => {
+                    content.setVisible(true);
+
+                    if (cardType === "bomba") {
+                        console.log("Bomba revelada! Iniciando explosão...");
+                        this.triggerExplosion(content.x, content.y);
+                    } else {
+                        console.log("Doce revelado!");
+                        this.candycollected++;
+                        this.animateCandybar();
+                        this.tweens.add({
+                            targets: content,
+                            x: this.candybar.x,
+                            y: this.candybar.y,
+                            duration: 500,
+                            scaleX: 0.1,
+                            scaleY: 0.1,
+                            onComplete: () => {
+                                content.destroy();
+                                this.animateCandybar();
+                            }
+                        });
+                    }
+
+                    this.time.delayedCall(200, () => {
+                        card.destroy(); // Remove a carta
+                    });
+                }
+            });
         }
+    }
+
+    animateCandybar() {
+        const proportion = this.candycollected / this.totalcandy;
+
+        let frameIndex = 0;
+        if (proportion <= 0.5) {
+            frameIndex = 1;
+        } else if (proportion > 0.5 && proportion < 1) {
+            frameIndex = 2;
+        } else if (proportion == 1) {
+            frameIndex = 3;
+        }
+
+        frameIndex = Math.min(frameIndex, 3);
+
+        this.candybar.anims.stop();
+        this.candybar.anims.play(`fillCandybar_${frameIndex}`, true);
+    }
+
+    triggerExplosion(x, y) {
+        console.log("Triggering explosion at:", x, y);
+
+        this.explosion.setPosition(x, y);
+        this.explosion.setVisible(true);
+
+        this.explosion.play('explode', true);
+
+        this.explosion.on('animationcomplete', () => {
+            console.log("Explosion animation complete");
+            this.explosion.setVisible(false);
+        }, this);
     }
 
     update() {

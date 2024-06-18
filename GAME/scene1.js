@@ -48,9 +48,37 @@ class Scene1 extends Phaser.Scene{
 
         this.anims.create({
             key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9 }),
-            frameRate: 10,
+            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 23 }),
+            frameRate: 20,
             repeat: 0
+        });
+
+        this.anims.create({
+            key: 'fillCandybar_0',
+            frames: this.anims.generateFrameNumbers('candybar', { start: 0, end: 0 }),
+            frameRate: 10,
+            repeat: 0  // Executa apenas uma vez
+        });
+
+        this.anims.create({
+            key: 'fillCandybar_1',
+            frames: this.anims.generateFrameNumbers('candybar', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: 0  // Executa apenas uma vez
+        });
+
+        this.anims.create({
+            key: 'fillCandybar_2',
+            frames: this.anims.generateFrameNumbers('candybar', { start: 0, end: 2 }),
+            frameRate: 10,
+            repeat: 0  // Executa apenas uma vez
+        });
+
+        this.anims.create({
+            key: 'fillCandybar_3',
+            frames: this.anims.generateFrameNumbers('candybar', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: 0  // Executa apenas uma vez
         });
 
     }
