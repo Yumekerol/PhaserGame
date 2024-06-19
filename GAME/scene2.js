@@ -14,8 +14,9 @@ class Scene2 extends Phaser.Scene {
         this.lantern = this.add.image(35, 30, "lantern");
         this.lantern.setScale(1.25);
 
-        this.lanternbar = this.add.image(120, 35, "lanternbar");
+        this.lanternbar = this.add.sprite(120, 35, "lanternbar");
         this.lanternbar.setScale(1.2);
+
         this.candybar = this.add.sprite(700, 35, "candybar");
         this.candybar.setScale(1.8);
 
@@ -43,10 +44,18 @@ class Scene2 extends Phaser.Scene {
             }
         }
 
+
         this.girl = this.physics.add.sprite(200, 200, "girl");
         this.physics.add.collider(this.girl, this.cards, this.revealCard, null, this);
 
-        // Configura a tecla de espaço para pular
+
+        this.light = this.add.image(100, 250, "light");
+        this.light.setScale(1.2);
+        this.light.alpha = 0.5;
+        this.light = this.add.image(100, 250, "light");
+        this.light.setScale(1.4);
+        this.light.alpha = 0.2;
+
         this.input.keyboard.on('keydown-SPACE', this.jump, this);
 
         this.explosion = this.add.sprite(0, 0, "explosion").setVisible(false);
