@@ -19,19 +19,34 @@ class Scene1 extends Phaser.Scene {
         this.load.image("quitButton", "assets/quitButton.png");
         this.load.image("tittle", "assets/tittle.png");
         this.load.image("questionButton", "assets/questionButton.png");
+        this.load.image("explanation", "assets/explanation.png");
         //this.load.audio("music", "assets/sounds/music.mp3");
     }
 
     create() {
-        this.background = this.add.image(0, 0, "background");
+        this.background = this.add.image(0, 0, "background").setInteractive();
         this.background.setOrigin(0, 0);
+        this.background.on('pointerdown', (pointer, gameObject) => {
+            if (this.explanation.visible) {
+                const bounds = this.explanation.getBounds();
+                if (!bounds.contains(pointer.x, pointer.y)) {
+                    this.explanation.setVisible(false);
+                }
+            }
+        });
+
         this.playgameButton = this.add.image(400, 300, "playgameButton").setInteractive();
         this.playgameButton.on('pointerdown', this.onplaygameButtonClicked, this);
         this.quitButton = this.add.image(400, 450, "quitButton").setInteractive();
         this.quitButton.on('pointerdown', this.onquitButtonClicked, this);
 
         this.questionButton = this.add.image(760, 35, "questionButton").setInteractive();
+        this.questionButton.on('pointerdown', this.onquestionButtonClicked, this);
+
         this.tittle = this.add.image(400, 100, "tittle");
+        this.explanation = this.add.image(400, 300, "explanation");
+        this.explanation.setVisible(false);
+
 
         this.anims.create({
             key: 'walking_x',
@@ -127,6 +142,9 @@ class Scene1 extends Phaser.Scene {
         this.scene.start("playGame");
     }
 
+    onquestionButtonClicked(){
+        this.explanation.setVisible(true);
+    }
     onquitButtonClicked(){
         close();
     }
