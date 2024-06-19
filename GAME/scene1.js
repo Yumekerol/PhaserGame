@@ -20,6 +20,7 @@ class Scene1 extends Phaser.Scene {
         this.load.image("tittle", "assets/tittle.png");
         this.load.image("questionButton", "assets/questionButton.png");
         this.load.image("explanation", "assets/explanation.png");
+        this.load.spritesheet("idleGirl", "assets/idleGirl.png",{ frameWidth: 64, frameHeight: 64 })
         //this.load.audio("music", "assets/sounds/music.mp3");
     }
 
@@ -34,7 +35,8 @@ class Scene1 extends Phaser.Scene {
                 }
             }
         });
-
+        this.idleGirl = this.add.sprite(700, 500, "idleGirl");
+        this.idleGirl.setScale(3);
         this.playgameButton = this.add.image(400, 300, "playgameButton").setInteractive();
         this.playgameButton.on('pointerdown', this.onplaygameButtonClicked, this);
         this.quitButton = this.add.image(400, 450, "quitButton").setInteractive();
@@ -47,6 +49,13 @@ class Scene1 extends Phaser.Scene {
         this.explanation = this.add.image(400, 300, "explanation");
         this.explanation.setVisible(false);
 
+        this.anims.create({
+            key:'idle',
+            frames:this.anims.generateFrameNumbers('idleGirl', {start:0, end: 7}),
+            frameRate: 5,
+            repeat: -1
+        })
+        this.idleGirl.play('idle', true);
 
         this.anims.create({
             key: 'walking_x',
