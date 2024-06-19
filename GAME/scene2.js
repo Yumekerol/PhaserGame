@@ -11,9 +11,11 @@ class Scene2 extends Phaser.Scene {
         this.background = this.add.image(0, 0, "background");
         this.background.setOrigin(0, 0);
 
-        this.lantern = this.add.image(35, 35, "lantern");
+        this.lantern = this.add.image(35, 30, "lantern");
         this.lantern.setScale(1.25);
 
+        this.lanternbar = this.add.image(120, 35, "lanternbar");
+        this.lanternbar.setScale(1.2);
         this.candybar = this.add.sprite(700, 35, "candybar");
         this.candybar.setScale(1.8);
 
@@ -89,7 +91,7 @@ class Scene2 extends Phaser.Scene {
                     content.setVisible(true);
 
                     if (cardType === "bomba") {
-                        console.log("Bomba revelada! Iniciando explosão...");
+                        console.log("Bomba revelada! Explosao");
                         this.triggerExplosion(content.x, content.y);
                     } else {
                         console.log("Doce revelado!");
@@ -136,15 +138,12 @@ class Scene2 extends Phaser.Scene {
     }
 
     triggerExplosion(x, y) {
-        console.log("Triggering explosion at:", x, y);
-
         this.explosion.setPosition(x, y);
         this.explosion.setVisible(true);
 
         this.explosion.play('explode', true);
 
         this.explosion.on('animationcomplete', () => {
-            console.log("Explosion animation complete");
             this.explosion.setVisible(false);
         }, this);
     }

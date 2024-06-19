@@ -12,6 +12,7 @@ class Scene1 extends Phaser.Scene{
         this.load.spritesheet("candybar", "assets/candybar.png", { frameWidth: 100, frameHeight: 32 });
         this.load.spritesheet("girl", "assets/meninarosa.png",{ frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet("explosion", "assets/explosion.png", { frameWidth: 700, frameHeight: 500 })
+        this.load.spritesheet("lanternbar", "assets/lanternbar.png", { frameWidth: 100, frameHeight: 32 })
         //this.load.audio("music", "assets/sounds/music.mp3")
     }
     create(){
@@ -57,28 +58,35 @@ class Scene1 extends Phaser.Scene{
             key: 'fillCandybar_0',
             frames: this.anims.generateFrameNumbers('candybar', { start: 0, end: 0 }),
             frameRate: 10,
-            repeat: 0  // Executa apenas uma vez
+            repeat: 0
         });
 
         this.anims.create({
             key: 'fillCandybar_1',
             frames: this.anims.generateFrameNumbers('candybar', { start: 0, end: 1 }),
             frameRate: 10,
-            repeat: 0  // Executa apenas uma vez
+            repeat: 0
         });
 
         this.anims.create({
             key: 'fillCandybar_2',
             frames: this.anims.generateFrameNumbers('candybar', { start: 0, end: 2 }),
             frameRate: 10,
-            repeat: 0  // Executa apenas uma vez
+            repeat: 0
         });
 
         this.anims.create({
             key: 'fillCandybar_3',
             frames: this.anims.generateFrameNumbers('candybar', { start: 0, end: 3 }),
             frameRate: 10,
-            repeat: 0  // Executa apenas uma vez
+            repeat: 0
+        });
+
+        this.anims.create({
+            key: 'Lanternbar_0',
+            frames: this.anims.generateFrameNumbers('candybar', { start: 0, end: 0 }),
+            frameRate: 10,
+            repeat: 0
         });
 
     }
