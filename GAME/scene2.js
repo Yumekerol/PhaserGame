@@ -13,13 +13,14 @@ class Scene2 extends Phaser.Scene {
         this.background = this.add.image(0, 0, "background");
         this.background.setOrigin(0, 0);
 
+
         this.lantern = this.add.image(35, 30, "lantern");
         this.lantern.setScale(1.25);
 
         this.lanternbar = this.add.sprite(120, 35, "lanternbar");
         this.lanternbar.setScale(1.2);
 
-        this.candybar = this.add.sprite(700, 35, "candybar");
+        this.candybar = this.add.sprite(650, 30, "candybar");
         this.candybar.setScale(1.8);
 
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -60,7 +61,11 @@ class Scene2 extends Phaser.Scene {
         this.input.keyboard.on('keydown-L', this.highlightRandomCandyCard, this);
 
         this.explosion = this.add.sprite(0, 0, "explosion").setVisible(false);
+
+        this.menuButton = this.add.image(760, 35, "menuButton").setInteractive();
+        this.menuButton.on('pointerdown', this.onButtonClicked, this);
     }
+
 
     generateRandomPositions(count, gridSize, xSpacing, ySpacing) {
         const positions = [];
@@ -102,7 +107,9 @@ class Scene2 extends Phaser.Scene {
 
                     if (cardType === "bomba") {
                         console.log("Bomba revelada! Explosao");
-                        this.triggerExplosion(content.x, content.y);
+                        this.triggerExplosion(content.x, content.y, () => {
+                            this.scene.start("bootGame");
+                        });
                     } else {
                         console.log("Doce revelado!");
                         this.candycollected++;
@@ -147,7 +154,7 @@ class Scene2 extends Phaser.Scene {
         this.candybar.anims.play(`fillCandybar_${frameIndex}`, true);
     }
 
-    triggerExplosion(x, y) {
+    triggerExplosion(x, y, onComplete) {
         this.explosion.setPosition(x, y);
         this.explosion.setVisible(true);
 
@@ -155,6 +162,9 @@ class Scene2 extends Phaser.Scene {
 
         this.explosion.on('animationcomplete', () => {
             this.explosion.setVisible(false);
+            if (onComplete) {
+                onComplete();
+            }
         }, this);
     }
     highlightRandomCandyCard() {
@@ -216,4 +226,10 @@ class Scene2 extends Phaser.Scene {
             this.girl.anims.play('stopped');
         }
     }
+
+    onButtonClicked() {
+        console.log('Botão clicado!');
+        this.scene.start("bootGame");
+    }
+
 }
