@@ -91,19 +91,19 @@ class Scene1 extends Phaser.Scene{
         });
         this.anims.create({
             key: 'Lanternbar_1',
-            frames: this.anims.generateFrameNumbers('candybar', { start: 0, end: 1 }),
+            frames: this.anims.generateFrameNumbers('candybar', { start: 1, end: 1 }),
             frameRate: 10,
             repeat: 0
         });
         this.anims.create({
             key: 'Lanternbar_2',
-            frames: this.anims.generateFrameNumbers('candybar', { start: 0, end: 2 }),
+            frames: this.anims.generateFrameNumbers('candybar', { start: 2, end: 2 }),
             frameRate: 10,
             repeat: 0
         });
         this.anims.create({
             key: 'Lanternbar_3',
-            frames: this.anims.generateFrameNumbers('candybar', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('candybar', { start: 3, end: 3 }),
             frameRate: 10,
             repeat: 0
         });

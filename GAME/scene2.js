@@ -4,6 +4,8 @@ class Scene2 extends Phaser.Scene {
         this.isJumping = false;
         this.candycollected = 0;
         this.totalcandy = 0;
+        this.lightUses = 0; // Adiciona esta linha
+        this.maxLightUses = 3;
     }
 
     create() {
@@ -52,11 +54,10 @@ class Scene2 extends Phaser.Scene {
         this.light = this.add.image(100, 250, "light");
         this.light.setScale(1.2);
         this.light.alpha = 0.5;
-        this.light = this.add.image(100, 250, "light");
-        this.light.setScale(1.4);
-        this.light.alpha = 0.2;
+        this.light.setVisible(false);
 
         this.input.keyboard.on('keydown-SPACE', this.jump, this);
+        this.input.keyboard.on('keydown-L', this.highlightRandomCandyCard, this);
 
         this.explosion = this.add.sprite(0, 0, "explosion").setVisible(false);
     }
@@ -156,6 +157,36 @@ class Scene2 extends Phaser.Scene {
             this.explosion.setVisible(false);
         }, this);
     }
+    highlightRandomCandyCard() {
+        if (this.lightUses >= this.maxLightUses) {
+            console.log("Já usaste todas as iluminações possíveis.");
+            return;
+        }
+
+        const candyCards = this.cards.getChildren().filter(card => card.getData("type") === "doce" && !card.getData("revealed"));
+
+        if (candyCards.length === 0) {
+            console.log("Não há mais cartas com doces disponíveis.");
+            return;
+        }
+
+        const randomIndex = Phaser.Math.Between(0, candyCards.length - 1);
+        const selectedCard = candyCards[randomIndex];
+
+        this.light.setPosition(selectedCard.x, selectedCard.y);
+        this.light.setVisible(true);
+        this.time.delayedCall(2000, () => {
+            this.light.setVisible(false);
+        });
+
+        this.lightUses++;
+        this.updateLanternbar();
+    }
+    updateLanternbar() {
+        const frame = Math.min(this.lightUses, 3); // Garante que o frame nunca passa de 3
+        this.lanternbar.setFrame(frame);
+    }
+
 
     update() {
         if (this.cursors.left.isDown) {
