@@ -15,8 +15,10 @@ class Scene1 extends Phaser.Scene {
         this.load.spritesheet("lanternbar", "assets/lanternbar.png", { frameWidth: 100, frameHeight: 32 });
         this.load.image("light", "assets/light.png");
         this.load.image("menuButton", "assets/menuButton.png");
-        this.load.image("playgameButton", "assets/playgameButton.png"); // Corrigido para incluir a extensão .png
-        this.load.image("quitButton", "assets/quitButton.png"); // Certifique-se de que este arquivo existe
+        this.load.image("playgameButton", "assets/playgameButton.png");
+        this.load.image("quitButton", "assets/quitButton.png");
+        this.load.image("tittle", "assets/tittle.png");
+        this.load.image("questionButton", "assets/questionButton.png");
         //this.load.audio("music", "assets/sounds/music.mp3");
     }
 
@@ -24,9 +26,12 @@ class Scene1 extends Phaser.Scene {
         this.background = this.add.image(0, 0, "background");
         this.background.setOrigin(0, 0);
         this.playgameButton = this.add.image(400, 300, "playgameButton").setInteractive();
-        this.playgameButton.on('pointerdown', this.onplaygameButtonClicked, this); // Corrigido para usar 'pointerdown'
+        this.playgameButton.on('pointerdown', this.onplaygameButtonClicked, this);
         this.quitButton = this.add.image(400, 450, "quitButton").setInteractive();
-        this.quitButton.on('pointerdown', this.onquitButtonClicked, this); // Corrigido para usar 'pointerdown'
+        this.quitButton.on('pointerdown', this.onquitButtonClicked, this);
+
+        this.questionButton = this.add.image(760, 35, "questionButton").setInteractive();
+        this.tittle = this.add.image(400, 100, "tittle");
 
         this.anims.create({
             key: 'walking_x',
@@ -119,7 +124,7 @@ class Scene1 extends Phaser.Scene {
 
     onplaygameButtonClicked() {
         this.add.text(20, 20, "Loading game...");
-        this.scene.start("playGame"); // Corrigido para "playGame" ao invés de "PLayGame"
+        this.scene.start("playGame");
     }
 
     onquitButtonClicked(){

@@ -4,7 +4,7 @@ class Scene2 extends Phaser.Scene {
         this.isJumping = false;
         this.candycollected = 0;
         this.totalcandy = 0;
-        this.lightUses = 0; // Adiciona esta linha
+        this.lightUses = 0;
         this.maxLightUses = 3;
     }
 
@@ -50,7 +50,7 @@ class Scene2 extends Phaser.Scene {
 
         this.girl = this.physics.add.sprite(200, 200, "girl");
         this.physics.add.collider(this.girl, this.cards, this.revealCard, null, this);
-
+        this.revealAllCardsTemporarily();
 
         this.light = this.add.image(100, 250, "light");
         this.light.setScale(1.2);
@@ -64,6 +64,7 @@ class Scene2 extends Phaser.Scene {
 
         this.menuButton = this.add.image(760, 35, "menuButton").setInteractive();
         this.menuButton.on('pointerdown', this.onButtonClicked, this);
+
     }
 
 
@@ -195,6 +196,31 @@ class Scene2 extends Phaser.Scene {
     updateLanternbar() {
         const frame = Math.min(this.lightUses, 3); // Garante que o frame nunca passa de 3
         this.lanternbar.setFrame(frame);
+    }
+
+    revealAllCardsTemporarily() {
+        this.cards.getChildren().forEach(card => {
+            const originalX = card.x;
+            const content = card.getData("content");
+            this.tweens.add({
+                targets: card,
+                x: card.x - 100,
+                duration: 500,
+
+                onComplete: () => {
+                    content.setVisible(true);
+
+                    this.time.delayedCall(1000, () => {
+                        this.tweens.add({
+                            targets: card,
+                            x: originalX,
+                            duration: 500
+                        });
+                        content.setVisible(false);
+                    });
+                }
+            });
+        });
     }
 
 
