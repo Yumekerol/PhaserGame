@@ -87,7 +87,7 @@ class Scene1 extends Phaser.Scene {
 
         this.anims.create({
             key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 23 }),
+            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 10 }),
             frameRate: 20,
             repeat: 0
         });

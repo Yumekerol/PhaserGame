@@ -57,8 +57,8 @@ class Scene2 extends Phaser.Scene {
         this.light.alpha = 0.5;
         this.light.setVisible(false);
 
-        this.input.keyboard.on('keydown-SPACE', this.jump, this);
-        this.input.keyboard.on('keydown-L', this.highlightRandomCandyCard, this);
+        this.input.keyboard.on('keydown-E', this.jump, this);
+        this.input.keyboard.on('keydown-Q', this.highlightRandomCandyCard, this);
 
         this.explosion = this.add.sprite(0, 0, "explosion").setVisible(false);
 
@@ -225,11 +225,11 @@ class Scene2 extends Phaser.Scene {
 
 
     update() {
-        if (this.cursors.left.isDown) {
+        if (this.input.keyboard.addKey('A').isDown) {
             this.girl.setFlipX(true);
             this.girl.setVelocityX(-160);
             this.girl.anims.play('walking_x', true);
-        } else if (this.cursors.right.isDown) {
+        } else if (this.input.keyboard.addKey('D').isDown) {
             this.girl.setFlipX(false);
             this.girl.setVelocityX(160);
             this.girl.anims.play('walking_x', true);
@@ -238,10 +238,10 @@ class Scene2 extends Phaser.Scene {
             this.girl.setVelocityX(0);
         }
 
-        if (this.cursors.up.isDown) {
+        if (this.input.keyboard.addKey('W').isDown) {
             this.girl.setVelocityY(-160);
             this.girl.anims.play('walking_up', true);
-        } else if (this.cursors.down.isDown) {
+        } else if (this.input.keyboard.addKey('S').isDown) {
             this.girl.setVelocityY(160);
             this.girl.anims.play('walking_down', true);
         } else {
