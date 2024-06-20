@@ -129,11 +129,12 @@ class Scene2 extends Phaser.Scene {
                     if (cardType === "bomba") {
                         console.log("Bomba revelada! Explosao");
                         this.triggerExplosion(content.x, content.y, () => {
+                            this.menuButton.setVisible(false);
                             this.GameOver.setVisible(true);
                             setTimeout(() => {
                                 this.scene.start("bootGame");
                                 this.musicGame.stop();
-                            }, 4000);
+                            }, 2000);
                         });
                     } else {
                         console.log("Doce revelado!");
