@@ -57,6 +57,11 @@ class Scene2 extends Phaser.Scene {
         this.light.alpha = 0.5;
         this.light.setVisible(false);
 
+        this.GameOver = this.add.image(400, 300, "GameOver").setVisible(false);
+        this.GameOver.alpha = 0.7;
+        this.Victory = this.add.image(400, 300, "Victory").setVisible(false);
+        this.Victory.alpha = 0.7;
+
         this.input.keyboard.on('keydown-E', this.jump, this);
         this.input.keyboard.on('keydown-Q', this.highlightRandomCandyCard, this);
 
@@ -109,7 +114,12 @@ class Scene2 extends Phaser.Scene {
                     if (cardType === "bomba") {
                         console.log("Bomba revelada! Explosao");
                         this.triggerExplosion(content.x, content.y, () => {
-                            this.scene.start("bootGame");
+                            this.GameOver.setVisible(true); // Mostrar "GameOver"
+
+                            // Esperar 4 segundos (4000 ms) antes de reiniciar o jogo
+                            setTimeout(() => {
+                                this.scene.start("bootGame");
+                            }, 4000);
                         });
                     } else {
                         console.log("Doce revelado!");
@@ -125,6 +135,12 @@ class Scene2 extends Phaser.Scene {
                             onComplete: () => {
                                 content.destroy();
                                 this.animateCandybar();
+                                if (this.candycollected === this.totalcandy) {
+                                    this.Victory.setVisible(true);
+                                    setTimeout(() => {
+                                        this.scene.start("bootGame");
+                                    }, 4000);
+                                }
                             }
                         });
                     }

@@ -21,6 +21,8 @@ class Scene1 extends Phaser.Scene {
         this.load.image("questionButton", "assets/questionButton.png");
         this.load.image("explanation", "assets/explanation.png");
         this.load.spritesheet("idleGirl", "assets/idleGirl.png",{ frameWidth: 64, frameHeight: 64 })
+        this.load.image('Victory', "assets/Victory.png");
+        this.load.image("GameOver", "assets/GameOver.png");
         //this.load.audio("music", "assets/sounds/music.mp3");
     }
 
