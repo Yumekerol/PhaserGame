@@ -24,6 +24,8 @@ class Scene1 extends Phaser.Scene {
         this.load.image("GameOver", "assets/GameOver.png");
         this.load.audio("musicGame", "assets/sounds/musicGame.mp3");
         this.load.audio("musicMenu", "assets/sounds/musicMenu.mp3");
+        this.load.audio("explosionsound", "assets/sounds/explosionsound.mp3");
+        this.load.audio("collectcandy", "assets/sounds/collectcandy.mp3");
     }
 
     create() {
