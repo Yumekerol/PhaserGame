@@ -56,10 +56,9 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.collider(this.girl, this.cards, this.revealCard, null, this);
         this.revealAllCardsTemporarily();
 
-        this.light = this.add.image(100, 250, "light");
+        this.light = this.add.image(100, 250, "light").setVisible(false);
         this.light.setScale(1.2);
         this.light.alpha = 0.5;
-        this.light.setVisible(false);
 
         this.musicGame = this.sound.add("musicGame");
         var musicConfig = {
@@ -291,7 +290,6 @@ class Scene2 extends Phaser.Scene {
     }
 
     onButtonClicked() {
-        console.log('Botão clicado!');
         this.scene.start("bootGame");
         this.musicGame.stop();
     }
