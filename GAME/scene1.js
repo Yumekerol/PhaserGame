@@ -27,6 +27,17 @@ class Scene1 extends Phaser.Scene {
     }
 
     create() {
+        this.musicMenu = this.sound.add("musicMenu");
+        var musicConfig = {
+            mute: false,
+            volume: 0.3,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+        }
+        this.musicMenu.play(musicConfig);
 
         this.background = this.add.image(0, 0, "background").setInteractive();
         this.background.setOrigin(0, 0);
@@ -129,6 +140,7 @@ class Scene1 extends Phaser.Scene {
     onplaygameButtonClicked() {
         this.add.text(20, 20, "Loading game...");
         this.scene.start("playGame");
+        this.musicMenu.stop();
     }
 
     onquestionButtonClicked(){

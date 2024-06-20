@@ -132,8 +132,8 @@ class Scene2 extends Phaser.Scene {
                         this.triggerExplosion(content.x, content.y, () => {
                             this.GameOver.setVisible(true);
                             setTimeout(() => {
-                                this.musicGame.stop();
                                 this.scene.start("bootGame");
+                                this.musicGame.stop();
                             }, 4000);
                         });
                     } else {
@@ -153,8 +153,8 @@ class Scene2 extends Phaser.Scene {
                                 if (this.candycollected === this.totalcandy) {
                                     this.Victory.setVisible(true);
                                     setTimeout(() => {
-                                        this.musicGame.stop();
                                         this.scene.start("bootGame");
+                                        this.musicGame.stop();
                                     }, 4000);
                                 }
                             }
@@ -292,8 +292,8 @@ class Scene2 extends Phaser.Scene {
 
     onButtonClicked() {
         console.log('Botão clicado!');
-        this.musicGame.stop();
         this.scene.start("bootGame");
+        this.musicGame.stop();
     }
 
 }
