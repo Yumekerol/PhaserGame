@@ -28,8 +28,7 @@ class Scene2 extends Phaser.Scene {
         this.candybar.setScale(1.8);
 
         this.cursors = this.input.keyboard.createCursorKeys();
-
-        this.positions = this.generateRandomPositions(16, 4, 190, 148);
+        this.positions = this.generateRandomPositions(16, 4, 190, 150);
 
         this.cards = this.physics.add.group();
 
@@ -134,6 +133,7 @@ class Scene2 extends Phaser.Scene {
                             setTimeout(() => {
                                 this.scene.start("bootGame");
                                 this.musicGame.stop();
+                                this.lightUses = 0;
                             }, 2000);
                         });
                     } else {
@@ -155,6 +155,7 @@ class Scene2 extends Phaser.Scene {
                                     setTimeout(() => {
                                         this.scene.start("bootGame");
                                         this.musicGame.stop();
+                                        this.lightUses = 0;
                                     }, 4000);
                                 }
                             }
@@ -316,6 +317,7 @@ class Scene2 extends Phaser.Scene {
     onButtonClicked() {
         this.scene.start("bootGame");
         this.musicGame.stop();
+        this.lightUses = 0;
     }
 
 }
