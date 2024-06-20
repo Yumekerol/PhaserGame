@@ -151,12 +151,13 @@ class Scene2 extends Phaser.Scene {
                                 content.destroy();
                                 this.animateCandybar();
                                 if (this.candycollected === this.totalcandy) {
+                                    this.menuButton.setVisible(false);
                                     this.Victory.setVisible(true);
                                     setTimeout(() => {
                                         this.scene.start("bootGame");
                                         this.musicGame.stop();
                                         this.lightUses = 0;
-                                    }, 4000);
+                                    }, 2000);
                                 }
                             }
                         });
