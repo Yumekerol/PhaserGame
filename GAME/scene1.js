@@ -12,7 +12,6 @@ class Scene1 extends Phaser.Scene {
         this.load.spritesheet("candybar", "assets/candybar.png", { frameWidth: 100, frameHeight: 32 });
         this.load.spritesheet("girl", "assets/meninarosa.png", { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet("explosion", "assets/explosion.png", { frameWidth: 700, frameHeight: 500 });
-        this.load.spritesheet("lanternbar", "assets/lanternbar.png", { frameWidth: 100, frameHeight: 32 });
         this.load.image("light", "assets/light.png");
         this.load.image("menuButton", "assets/menuButton.png");
         this.load.image("playgameButton", "assets/playgameButton.png");
@@ -23,13 +22,15 @@ class Scene1 extends Phaser.Scene {
         this.load.spritesheet("idleGirl", "assets/idleGirl.png",{ frameWidth: 64, frameHeight: 64 })
         this.load.image('Victory', "assets/Victory.png");
         this.load.image("GameOver", "assets/GameOver.png");
-        //this.load.audio("music", "assets/sounds/music.mp3");
+        this.load.audio("musicGame", "assets/sounds/musicGame.mp3");
+        this.load.audio("musicMenu", "assets/sounds/musicMenu.mp3");
     }
 
     create() {
+
         this.background = this.add.image(0, 0, "background").setInteractive();
         this.background.setOrigin(0, 0);
-        this.background.on('pointerdown', (pointer, gameObject) => {
+        this.background.on('pointerdown', (pointer) => {
             if (this.explanation.visible) {
                 const bounds = this.explanation.getBounds();
                 if (!bounds.contains(pointer.x, pointer.y)) {
@@ -37,6 +38,7 @@ class Scene1 extends Phaser.Scene {
                 }
             }
         });
+
         this.idleGirl = this.add.sprite(700, 500, "idleGirl");
         this.idleGirl.setScale(3);
         this.playgameButton = this.add.image(400, 300, "playgameButton").setInteractive();
@@ -89,7 +91,7 @@ class Scene1 extends Phaser.Scene {
 
         this.anims.create({
             key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 10 }),
+            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9 }),
             frameRate: 20,
             repeat: 0
         });
@@ -122,30 +124,6 @@ class Scene1 extends Phaser.Scene {
             repeat: 0
         });
 
-        this.anims.create({
-            key: 'Lanternbar_0',
-            frames: this.anims.generateFrameNumbers('lanternbar', { start: 0, end: 0 }), // Corrigido para lanternbar
-            frameRate: 10,
-            repeat: 0
-        });
-        this.anims.create({
-            key: 'Lanternbar_1',
-            frames: this.anims.generateFrameNumbers('lanternbar', { start: 1, end: 1 }), // Corrigido para lanternbar
-            frameRate: 10,
-            repeat: 0
-        });
-        this.anims.create({
-            key: 'Lanternbar_2',
-            frames: this.anims.generateFrameNumbers('lanternbar', { start: 2, end: 2 }), // Corrigido para lanternbar
-            frameRate: 10,
-            repeat: 0
-        });
-        this.anims.create({
-            key: 'Lanternbar_3',
-            frames: this.anims.generateFrameNumbers('lanternbar', { start: 3, end: 3 }), // Corrigido para lanternbar
-            frameRate: 10,
-            repeat: 0
-        });
     }
 
     onplaygameButtonClicked() {

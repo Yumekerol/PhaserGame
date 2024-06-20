@@ -14,11 +14,15 @@ class Scene2 extends Phaser.Scene {
         this.background.setOrigin(0, 0);
 
 
-        this.lantern = this.add.image(35, 30, "lantern");
-        this.lantern.setScale(1.25);
+        this.lantern1 = this.add.image(35, 30, "lantern");
+        this.lantern1.setScale(1.25);
 
-        this.lanternbar = this.add.sprite(120, 35, "lanternbar");
-        this.lanternbar.setScale(1.2);
+        this.lantern2 = this.add.image(85, 30, "lantern");
+        this.lantern2.setScale(1.25);
+
+        this.lantern3 = this.add.image(135, 30, "lantern");
+        this.lantern3.setScale(1.25);
+
 
         this.candybar = this.add.sprite(650, 30, "candybar");
         this.candybar.setScale(1.8);
@@ -56,6 +60,18 @@ class Scene2 extends Phaser.Scene {
         this.light.setScale(1.2);
         this.light.alpha = 0.5;
         this.light.setVisible(false);
+
+        this.musicGame = this.sound.add("musicGame");
+        var musicConfig = {
+            mute: false,
+            volume: 0.3,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+        }
+        this.musicGame.play(musicConfig);
 
         this.GameOver = this.add.image(400, 300, "GameOver").setVisible(false);
         this.GameOver.alpha = 0.7;
@@ -114,10 +130,9 @@ class Scene2 extends Phaser.Scene {
                     if (cardType === "bomba") {
                         console.log("Bomba revelada! Explosao");
                         this.triggerExplosion(content.x, content.y, () => {
-                            this.GameOver.setVisible(true); // Mostrar "GameOver"
-
-                            // Esperar 4 segundos (4000 ms) antes de reiniciar o jogo
+                            this.GameOver.setVisible(true);
                             setTimeout(() => {
+                                this.musicGame.stop();
                                 this.scene.start("bootGame");
                             }, 4000);
                         });
@@ -138,15 +153,15 @@ class Scene2 extends Phaser.Scene {
                                 if (this.candycollected === this.totalcandy) {
                                     this.Victory.setVisible(true);
                                     setTimeout(() => {
+                                        this.musicGame.stop();
                                         this.scene.start("bootGame");
                                     }, 4000);
                                 }
                             }
                         });
                     }
-
                     this.time.delayedCall(200, () => {
-                        card.destroy(); // Remove a carta
+                        card.destroy();
                     });
                 }
             });
@@ -189,14 +204,12 @@ class Scene2 extends Phaser.Scene {
             console.log("Já usaste todas as iluminações possíveis.");
             return;
         }
-
         const candyCards = this.cards.getChildren().filter(card => card.getData("type") === "doce" && !card.getData("revealed"));
 
         if (candyCards.length === 0) {
             console.log("Não há mais cartas com doces disponíveis.");
             return;
         }
-
         const randomIndex = Phaser.Math.Between(0, candyCards.length - 1);
         const selectedCard = candyCards[randomIndex];
 
@@ -207,11 +220,19 @@ class Scene2 extends Phaser.Scene {
         });
 
         this.lightUses++;
-        this.updateLanternbar();
+        this.updateLanternVisibility();
     }
-    updateLanternbar() {
-        const frame = Math.min(this.lightUses, 3); // Garante que o frame nunca passa de 3
-        this.lanternbar.setFrame(frame);
+
+    updateLanternVisibility() {
+        if (this.lightUses >= 1) {
+            this.lantern3.setVisible(false);
+        }
+        if (this.lightUses >= 2) {
+            this.lantern2.setVisible(false);
+        }
+        if (this.lightUses >= 3) {
+            this.lantern1.setVisible(false);
+        }
     }
 
     revealAllCardsTemporarily() {
@@ -271,6 +292,7 @@ class Scene2 extends Phaser.Scene {
 
     onButtonClicked() {
         console.log('Botão clicado!');
+        this.musicGame.stop();
         this.scene.start("bootGame");
     }
 
