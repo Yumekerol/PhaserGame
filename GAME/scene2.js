@@ -6,6 +6,8 @@ class Scene2 extends Phaser.Scene {
         this.totalcandy = 0;
         this.lightUses = 0;
         this.maxLightUses = 3;
+        this.isBombRevealed = false;
+        this.isVictory = false;
     }
 
     create() {
@@ -111,66 +113,71 @@ class Scene2 extends Phaser.Scene {
         }
     }
 
-    revealCard(girl, card) {
-        if (this.isJumping && !card.getData("revealed")) {
-            card.setData("revealed", true);
+  revealCard(girl, card) {
+    if (this.isJumping && !card.getData("revealed")) {
+      card.setData("revealed", true);
 
-            const content = card.getData("content");
-            const cardType = card.getData("type");
+      const content = card.getData("content");
+      const cardType = card.getData("type");
 
-            this.tweens.add({
-                targets: card,
-                y: card.y - 50,
-                duration: 300,
-                onComplete: () => {
-                    content.setVisible(true);
+      this.tweens.add({
+        targets: card,
+        y: card.y - 50,
+        duration: 300,
+        onComplete: () => {
+          content.setVisible(true);
 
-                    if (cardType === "bomba") {
-                        console.log("Bomba revelada! Explosao");
-                        this.triggerExplosion(content.x, content.y, () => {
-                            this.menuButton.setVisible(false);
-                            this.GameOver.setVisible(true);
-                            setTimeout(() => {
-                                this.scene.start("bootGame");
-                                this.musicGame.stop();
-                                this.lightUses = 0;
-                            }, 2000);
-                        });
-                    } else {
-                        console.log("Doce revelado!");
-                        this.candycollected++;
-                        this.animateCandybar();
-                        this.tweens.add({
-                            targets: content,
-                            x: this.candybar.x,
-                            y: this.candybar.y,
-                            duration: 500,
-                            scaleX: 0.1,
-                            scaleY: 0.1,
-                            onComplete: () => {
-                                content.destroy();
-                                this.animateCandybar();
-                                if (this.candycollected === this.totalcandy) {
-                                    this.menuButton.setVisible(false);
-                                    this.Victory.setVisible(true);
-                                    setTimeout(() => {
-                                        this.scene.start("bootGame");
-                                        this.musicGame.stop();
-                                        this.lightUses = 0;
-                                    }, 2000);
-                                }
-                            }
-                        });
-                    }
-                    this.time.delayedCall(200, () => {
-                        card.destroy();
-                    });
-                }
+          if (cardType === "bomba") {
+            console.log("Bomba revelada! Explosao");
+            this.isBombRevealed = true; // Adiciona esta linha
+            this.triggerExplosion(content.x, content.y, () => {
+              this.menuButton.setVisible(false);
+              this.GameOver.setVisible(true);
+              setTimeout(() => {
+                this.scene.start("bootGame");
+                this.musicGame.stop();
+                this.lightUses = 0;
+                this.isBombRevealed = false; // Reseta para o próximo jogo
+              }, 2000);
             });
+          } else {
+            console.log("Doce revelado!");
+            this.candycollected++;
+            this.animateCandybar();
+            this.tweens.add({
+              targets: content,
+              x: this.candybar.x,
+              y: this.candybar.y,
+              duration: 500,
+              scaleX: 0.1,
+              scaleY: 0.1,
+              onComplete: () => {
+                content.destroy();
+                this.animateCandybar();
+                if (this.candycollected === this.totalcandy) {
+                  this.isVictory = true;
+                  this.menuButton.setVisible(false);
+                  this.Victory.setVisible(true);
+                  setTimeout(() => {
+                    this.scene.start("bootGame");
+                    this.musicGame.stop();
+                    this.lightUses = 0;
+                    this.isBombRevealed = false; // Reseta para o próximo jogo
+                  }, 2000);
+                }
+              }
+            });
+          }
+          this.time.delayedCall(200, () => {
+            card.destroy();
+          });
         }
+      });
     }
+  }
 
-    animateCandybar() {
+
+  animateCandybar() {
         const proportion = this.candycollected / this.totalcandy;
 
         let frameIndex = 0;
@@ -287,6 +294,16 @@ class Scene2 extends Phaser.Scene {
 
 
     update() {
+
+      if (this.GameOver.visible || this.Victory.visible || this.isBombRevealed || this.isVictory) {
+        // Se sim, não permite a movimentação da rapariga
+        this.girl.setVelocityX(0);
+        this.girl.setVelocityY(0);
+        this.girl.anims.play('stopped');
+
+        return; // Sai da função update
+      }
+
         if (this.input.keyboard.addKey('A').isDown) {
             this.girl.setFlipX(true);
             this.girl.setVelocityX(-160);
