@@ -171,18 +171,6 @@ class Scene2 extends Phaser.Scene {
     }
 
     animateCandybar() {
-        this.collectcandy = this.sound.add("collectcandy");
-        var musicConfig = {
-            mute: false,
-            volume: 0.3,
-            rate: 1,
-            detune: 0,
-            seek: 0,
-            loop: false,
-            delay: 0
-        }
-        this.collectcandy.play(musicConfig);
-
         const proportion = this.candycollected / this.totalcandy;
 
         let frameIndex = 0;
@@ -198,6 +186,18 @@ class Scene2 extends Phaser.Scene {
 
         this.candybar.anims.stop();
         this.candybar.anims.play(`fillCandybar_${frameIndex}`, true);
+
+        this.collectcandy = this.sound.add("collectcandy");
+        var musicConfig = {
+            mute: false,
+            volume: 0.3,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: false,
+            delay: 0
+        }
+        this.collectcandy.play(musicConfig);
     }
 
     triggerExplosion(x, y, onComplete) {
@@ -276,7 +276,7 @@ class Scene2 extends Phaser.Scene {
                         this.tweens.add({
                             targets: card,
                             x: originalX,
-                            duration: 500
+                            duration: 1000
                         });
                         content.setVisible(false);
                     });
