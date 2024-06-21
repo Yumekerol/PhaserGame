@@ -129,7 +129,7 @@ class Scene2 extends Phaser.Scene {
 
           if (cardType === "bomba") {
             console.log("Bomba revelada! Explosao");
-            this.isBombRevealed = true; // Adiciona esta linha
+            this.isBombRevealed = true;
             this.triggerExplosion(content.x, content.y, () => {
               this.menuButton.setVisible(false);
               this.GameOver.setVisible(true);
@@ -137,11 +137,22 @@ class Scene2 extends Phaser.Scene {
                 this.scene.start("bootGame");
                 this.musicGame.stop();
                 this.lightUses = 0;
-                this.isBombRevealed = false; // Reseta para o próximo jogo
+                this.isBombRevealed = false;
               }, 2000);
             });
           } else {
             console.log("Doce revelado!");
+            this.collectcandy = this.sound.add("collectcandy");
+            var musicConfig = {
+              mute: false,
+              volume: 0.3,
+              rate: 1,
+              detune: 0,
+              seek: 0,
+              loop: false,
+              delay: 0
+            }
+            this.collectcandy.play(musicConfig);
             this.candycollected++;
             this.animateCandybar();
             this.tweens.add({
@@ -162,7 +173,7 @@ class Scene2 extends Phaser.Scene {
                     this.scene.start("bootGame");
                     this.musicGame.stop();
                     this.lightUses = 0;
-                    this.isBombRevealed = false; // Reseta para o próximo jogo
+                    this.isBombRevealed = false;
                   }, 2000);
                 }
               }
@@ -194,17 +205,6 @@ class Scene2 extends Phaser.Scene {
         this.candybar.anims.stop();
         this.candybar.anims.play(`fillCandybar_${frameIndex}`, true);
 
-        this.collectcandy = this.sound.add("collectcandy");
-        var musicConfig = {
-            mute: false,
-            volume: 0.3,
-            rate: 1,
-            detune: 0,
-            seek: 0,
-            loop: false,
-            delay: 0
-        }
-        this.collectcandy.play(musicConfig);
     }
 
     triggerExplosion(x, y, onComplete) {
