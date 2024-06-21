@@ -5,6 +5,8 @@ class Scene2 extends Phaser.Scene {
         this.candycollected = 0;
         this.totalcandy = 0;
         this.lightUses = 0;
+        this.totalcandy = 0;
+        this.candycollected = 0;
         this.maxLightUses = 3;
         this.isBombRevealed = false;
         this.isVictory = false;
@@ -136,6 +138,8 @@ class Scene2 extends Phaser.Scene {
                 this.scene.start("bootGame");
                 this.musicGame.stop();
                 this.lightUses = 0;
+                this.candycollected = 0;
+                  this.totalcandy = 0;
                 this.isBombRevealed = false;
               }, 2000);
             });
@@ -161,6 +165,8 @@ class Scene2 extends Phaser.Scene {
                     this.scene.start("bootGame");
                     this.musicGame.stop();
                     this.lightUses = 0;
+                    this.totalcandy = 0;
+                    this.candycollected = 0;
                     this.isBombRevealed = false;
                   }, 2000);
                 }
@@ -189,7 +195,9 @@ class Scene2 extends Phaser.Scene {
         }
 
         frameIndex = Math.min(frameIndex, 3);
-
+      console.log(`candycollected: ${this.candycollected}`);
+      console.log(`totalcandy: ${this.totalcandy}`);
+      console.log(`frameIndex: ${frameIndex}`);
         this.candybar.anims.stop();
         this.candybar.anims.play(`fillCandybar_${frameIndex}`, true);
     }
@@ -323,6 +331,9 @@ class Scene2 extends Phaser.Scene {
         this.scene.start("bootGame");
         this.musicGame.stop();
         this.lightUses = 0;
+        this.candycollected = 0;
+        this.totalcandy = 0;
+
     }
 
 }
