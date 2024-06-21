@@ -139,7 +139,7 @@ class Scene2 extends Phaser.Scene {
                 this.musicGame.stop();
                 this.lightUses = 0;
                 this.candycollected = 0;
-                  this.totalcandy = 0;
+                this.totalcandy = 0;
                 this.isBombRevealed = false;
               }, 2000);
             });
@@ -178,7 +178,7 @@ class Scene2 extends Phaser.Scene {
                     this.lightUses = 0;
                     this.totalcandy = 0;
                     this.candycollected = 0;
-                    this.isBombRevealed = false;
+                    this.isVictory = false;
                   }, 2000);
                 }
               }
