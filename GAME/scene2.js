@@ -85,7 +85,6 @@ class Scene2 extends Phaser.Scene {
 
         this.menuButton = this.add.image(760, 35, "menuButton").setInteractive();
         this.menuButton.on('pointerdown', this.onButtonClicked, this);
-
     }
 
 
@@ -142,17 +141,6 @@ class Scene2 extends Phaser.Scene {
             });
           } else {
             console.log("Doce revelado!");
-            this.collectcandy = this.sound.add("collectcandy");
-            var musicConfig = {
-              mute: false,
-              volume: 0.3,
-              rate: 1,
-              detune: 0,
-              seek: 0,
-              loop: false,
-              delay: 0
-            }
-            this.collectcandy.play(musicConfig);
             this.candycollected++;
             this.animateCandybar();
             this.tweens.add({
@@ -204,7 +192,6 @@ class Scene2 extends Phaser.Scene {
 
         this.candybar.anims.stop();
         this.candybar.anims.play(`fillCandybar_${frameIndex}`, true);
-
     }
 
     triggerExplosion(x, y, onComplete) {
