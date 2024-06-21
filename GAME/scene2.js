@@ -147,6 +147,17 @@ class Scene2 extends Phaser.Scene {
             console.log("Doce revelado!");
             this.candycollected++;
             this.animateCandybar();
+              this.collectcandy = this.sound.add("collectcandy");
+              var musicConfig = {
+                  mute: false,
+                  volume: 0.3,
+                  rate: 1,
+                  detune: 0,
+                  seek: 0,
+                  loop: false,
+                  delay: 0
+              }
+              this.collectcandy.play(musicConfig);
             this.tweens.add({
               targets: content,
               x: this.candybar.x,
